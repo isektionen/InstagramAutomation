@@ -96,6 +96,7 @@ def create_story(event_dict):
 def post_story(image_path):
 
     cl = Client()
+    cl.load_settings("insta_settings.json")
     cl.login(IG_USERNAME, IG_PASSWORD)
     cl.photo_upload_to_story(image_path, caption="Veckan på I")
     print("✅ Story posted successfully!")
