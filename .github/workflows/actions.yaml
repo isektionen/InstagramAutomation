@@ -19,8 +19,13 @@ jobs:
           sudo locale-gen sv_SE.UTF-8
           sudo update-locale LANG=sv_SE.UTF-8
           export LANG=sv_SE.UTF-8
-
-
+          
+      - name: Restore Insta settings
+        run: |
+          echo "$IG_SESSION_B64" | base64 --decode > insta_settings.json
+        env:
+          IG_SESSION_B64: ${{ secrets.IG_SESSION_B64 }}
+  
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
