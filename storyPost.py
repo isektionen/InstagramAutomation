@@ -11,6 +11,6 @@ cl = Client()
 cl.login(username, password)
 
 # Upload Instagram story
-cl.photo_upload_to_story("your_image.jpg", caption="Weekly story via GitHub Actions!")
+cl.photo_upload_to_story("image.jpg", caption="Weekly story via GitHub Actions!")
 
 print("✅ Story posted successfully!")
