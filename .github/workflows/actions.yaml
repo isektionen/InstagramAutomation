@@ -28,4 +28,4 @@ jobs:
         
       run: |
         echo "Running Instagram story poster..."
-        python post_story.py  # Runs your script
+        python storyPost.py  # Runs your script
