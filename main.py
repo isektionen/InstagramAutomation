@@ -22,7 +22,7 @@ TOKEN_URI = os.environ["TOKEN_URI"]
 API_KEY = os.environ["API_KEY"]
 TEMPLATE_ID = os.environ["TEMPLATE_ID"]
 IG_USERNAME = os.environ["IG_USERNAME"]
-IG_PASSWORD = os.environ["IG_PASSWORD]
+IG_PASSWORD = os.environ["IG_PASSWORD"]
 
 
 
