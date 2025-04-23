@@ -7,7 +7,7 @@ on:
 
 jobs:
   post-story:
-    runs-on: ubuntu-latest  # Using the latest Ubuntu runner
+    runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repo
@@ -16,16 +16,17 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: 3.9  # Updated to Python 3.9 (a stable version)
+        python-version: 3.9
 
     - name: Install dependencies
-      run: pip install instagrapi
+      run: |
+        pip install instagrapi
+        pip install Pillow
 
     - name: Run script
       env:
-        IG_USERNAME: ${{ secrets.BURNER_USERNAME }}  # Access username from secrets
-        IG_PASSWORD: ${{ secrets.BURNER_PASSWORD }}  # Access password from secrets
-        
+        IG_USERNAME: ${{ secrets.BURNER_USERNAME }}
+        IG_PASSWORD: ${{ secrets.BURNER_PASSWORD }}
       run: |
         echo "Running Instagram story poster..."
-        python storyPost.py  # Runs your script
+        python storyPost.py
