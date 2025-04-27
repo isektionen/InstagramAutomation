@@ -52,6 +52,7 @@ def main():
         for event in sub_list:
             dt = datetime.fromisoformat(event.start.isoformat())
             date_str = f"{dt.strftime('%A')} {dt.day}/{dt.month}"
+            date_str = date_str.capitalize()
             time_str = dt.strftime("%H:%M")
             event_dict[f"event_{i}_date"] = date_str
             event_dict[f"event_{i}_description"] = event.summary + " " + time_str
@@ -94,7 +95,8 @@ def create_story(event_dict):
         post_story(image_path)
     
 def post_story(image_path):
-
+    settings_path = "insta_settings.json"
+    cl.load_settings(settings_path)
     cl = Client()
     cl.login(IG_USERNAME, IG_PASSWORD)
     cl.photo_upload_to_story(image_path, caption="Veckan på I")
