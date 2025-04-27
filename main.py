@@ -21,8 +21,8 @@ SCOPES = [os.environ["SCOPES"]]
 TOKEN_URI = os.environ["TOKEN_URI"]
 API_KEY = os.environ["API_KEY"]
 TEMPLATE_ID = os.environ["TEMPLATE_ID"]
-IG_USERNAME = os.environ("IG_USERNAME")
-IG_PASSWORD = os.environ("IG_PASSWORD")
+IG_USERNAME = os.environ["IG_USERNAME"]
+IG_PASSWORD = os.environ["IG_PASSWORD"]
 
 
 
@@ -98,6 +98,7 @@ def post_story(image_path):
     settings_path = "insta_settings.json"
     cl.load_settings(settings_path)
     cl = Client()
+    cl.load_settings("insta_settings.json")
     cl.login(IG_USERNAME, IG_PASSWORD)
     cl.photo_upload_to_story(image_path, caption="Veckan på I")
     print("✅ Story posted successfully!")
