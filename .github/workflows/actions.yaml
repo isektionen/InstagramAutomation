@@ -42,10 +42,10 @@ jobs:
           IG_PASSWORD: ${{ secrets.BURNER_PASSWORD }}
           API_KEY: ${{ secrets.API_KEY }}
           TEMPLATE_ID: ${{ secrets.TEMPLATE_ID }}
-          TOKEN : ${{ secrets.TOKEN }}
-          REFRESH_TOKEN : ${{ secrets.REFRESH_TOKEN }}
-          CLIENT_ID : ${{ secrets.CLIENT_ID }}
-          CLIENT_SECRET : ${{ secrets.CLIENT_SECRET }}
-          SCOPES : ${{ secrets.SCOPES }}
-          TOKEN_URI : ${{ secrets.TOKEN_URI }}
+          TOKEN: ${{ secrets.TOKEN }}
+          REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
+          CLIENT_ID: ${{ secrets.CLIENT_ID }}
+          CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
+          SCOPES: ${{ secrets.SCOPES }}
+          TOKEN_URI: ${{ secrets.TOKEN_URI }}
         run: python main.py
