@@ -21,8 +21,8 @@ SCOPES = [os.environ["SCOPES"]]
 TOKEN_URI = os.environ["TOKEN_URI"]
 API_KEY = os.environ["API_KEY"]
 TEMPLATE_ID = os.environ["TEMPLATE_ID"]
-IG_USERNAME = os.environ["IG_USERNAME"]
-IG_PASSWORD = os.environ["IG_PASSWORD"]
+IG_USERNAME = os.environ["BURNER_USERNAME"]
+IG_PASSWORD = os.environ["BURNER_PASSWORD"]
 
 
 
