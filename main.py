@@ -4,7 +4,6 @@ from dotenv import load_dotenv
 import os
 from google.oauth2.credentials import Credentials
 import locale
-from datetime import datetime
 import requests
 from instagrapi import Client
 
