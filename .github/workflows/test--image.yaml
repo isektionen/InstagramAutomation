@@ -1,4 +1,4 @@
-name: Weekly Instagram Story
+name: Image_generator_test
 
 on:
   schedule:
