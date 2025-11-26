@@ -37,6 +37,13 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+
+      - name: Debug repo contents
+        run: |
+          pwd
+          ls -la
+          ls -R
+          
       # Step 6: Run image generator script
       - name: Run image_generator_v2
         env:
@@ -54,8 +61,4 @@ jobs:
         with:
           name: weekly-event-image
           path: weekly_events.png
-      - name: Debug repo contents
-        run: |
-          pwd
-          ls -la
-          ls -R
+
