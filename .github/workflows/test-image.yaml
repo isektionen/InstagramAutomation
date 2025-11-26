@@ -38,7 +38,7 @@ jobs:
           pip install -r requirements.txt
 
       # Step 6: Run image generator script
-      - name: Run image_generator_v2.py
+      - name: Run image_generator_v2
         env:
           TOKEN: ${{ secrets.TOKEN }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
@@ -54,3 +54,8 @@ jobs:
         with:
           name: weekly-event-image
           path: weekly_events.png
+      - name: Debug repo contents
+        run: |
+          pwd
+          ls -la
+          ls -R
