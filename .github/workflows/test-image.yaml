@@ -11,6 +11,14 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      - name: Install sv_SE.UTF-8 locale
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y locales
+          sudo locale-gen sv_SE.UTF-8
+          sudo update-locale LANG=sv_SE.UTF-8
+          export LANG=sv_SE.UTF-8
+
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
@@ -29,7 +37,7 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           SCOPES: ${{ secrets.SCOPES }}
           TOKEN_URI: ${{ secrets.TOKEN_URI }}
-        run: image_generator_v2.py
+        run: python image_generator_v2.py
 
       - name: Upload generated image as artifact
         uses: actions/upload-artifact@v3
