@@ -1,16 +1,22 @@
 name: Test Event Image
 
 on:
-  workflow_dispatch:  # run manually
+  workflow_dispatch:  # manual trigger
 
 jobs:
   generate-image:
     runs-on: ubuntu-latest
 
     steps:
+      # Step 1: Checkout repository
       - name: Checkout repo
         uses: actions/checkout@v3
 
+      # Step 2: Debugging (optional) - list all files
+      - name: List repository files
+        run: ls -R
+
+      # Step 3: Install Swedish locale
       - name: Install sv_SE.UTF-8 locale
         run: |
           sudo apt-get update
@@ -19,17 +25,20 @@ jobs:
           sudo update-locale LANG=sv_SE.UTF-8
           export LANG=sv_SE.UTF-8
 
+      # Step 4: Set up Python
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
 
+      # Step 5: Install dependencies
       - name: Install dependencies from requirements.txt
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run event image script
+      # Step 6: Run image generator script
+      - name: Run image_generator_v2.py
         env:
           TOKEN: ${{ secrets.TOKEN }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
@@ -39,9 +48,9 @@ jobs:
           TOKEN_URI: ${{ secrets.TOKEN_URI }}
         run: python image_generator_v2.py
 
-      - name: Upload generated image as artifact
+      # Step 7: Upload generated image as artifact
+      - name: Upload generated image
         uses: actions/upload-artifact@v4
         with:
           name: weekly-event-image
           path: weekly_events.png
-
