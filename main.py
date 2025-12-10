@@ -24,7 +24,6 @@ IG_USERNAME = os.environ["IG_USERNAME"]
 IG_PASSWORD = os.environ["IG_PASSWORD"]
 
 
-
 AUTH_TOKEN = Credentials(
     token=TOKEN,
     refresh_token=REFRESH_TOKEN,
