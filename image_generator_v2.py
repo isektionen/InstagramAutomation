@@ -44,7 +44,6 @@ AUTH_TOKEN = Credentials(
     token_uri=TOKEN_URI
 )
 
-
 def fetch_events():
     """Fetch events for the next 7 days from Google Calendar"""
     calendar = GoogleCalendar(
@@ -59,6 +58,7 @@ def fetch_events():
     )
     print(events)
     event_list = list(events)
+    print(event_list)
     # Split into chunks if needed
     sub_lists = [event_list[i:i + CHUNK_SIZE] for i in range(0, len(event_list), CHUNK_SIZE)]
     return sub_lists
