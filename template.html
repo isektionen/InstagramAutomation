@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="sv">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Veckan på I</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            width: 1080px;
+            height: 1920px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            overflow: hidden;
+        }
+
+        .container {
+            padding: 20px;
+            height: 100%;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        h1 {
+            font-size: 90px;
+            margin: 0 0 20px 0;
+            text-align: center;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .day-section {
+            margin-bottom: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .day-name {
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 5px;
+            border-bottom: 3px solid rgba(255, 255, 255, 0.5);
+            padding-bottom: 5px;
+        }
+
+        .event {
+            font-size: {
+                    {
+                    font_size
+                }
+            }
+
+            px;
+            margin: 4px 0;
+            padding: 5px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            line-height: 1.2;
+        }
+
+        .event-name {
+            font-weight: 600;
+        }
+
+        .event-time {
+            opacity: 0.9;
+            font-size: 0.875em;
+        }
+
+        .no-events {
+            font-size: 28px;
+            opacity: 0.7;
+            font-style: italic;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Veckan på I</h1>
+
+        {% if events.monday %}
+        <div class="day-section">
+            <div class="day-name">Måndag</div>
+            {% for event in events.monday %}
+            <div class="event">
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-time">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if events.tuesday %}
+        <div class="day-section">
+            <div class="day-name">Tisdag</div>
+            {% for event in events.tuesday %}
+            <div class="event">
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-time">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if events.wednesday %}
+        <div class="day-section">
+            <div class="day-name">Onsdag</div>
+            {% for event in events.wednesday %}
+            <div class="event">
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-time">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if events.thursday %}
+        <div class="day-section">
+            <div class="day-name">Torsdag</div>
+            {% for event in events.thursday %}
+            <div class="event">
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-time">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if events.friday %}
+        <div class="day-section">
+            <div class="day-name">Fredag</div>
+            {% for event in events.friday %}
+            <div class="event">
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-time">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if events.saturday %}
+        <div class="day-section">
+            <div class="day-name">Lördag</div>
+            {% for event in events.saturday %}
+            <div class="event">
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-time">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+
+        {% if events.sunday %}
+        <div class="day-section">
+            <div class="day-name">Söndag</div>
+            {% for event in events.sunday %}
+            <div class="event">
+                <div class="event-name">{{ event.name }}</div>
+                <div class="event-time">{{ event.start_time }} - {{ event.end_time }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+    </div>
+</body>
+
+</html>

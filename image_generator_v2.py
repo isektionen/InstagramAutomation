@@ -56,13 +56,10 @@ def fetch_events():
         order_by="startTime",
         single_events=True
     )
-    print(events)
     event_list = list(events)
-    print(event_list)
     # Split into chunks if needed
     sub_lists = [event_list[i:i + CHUNK_SIZE] for i in range(0, len(event_list), CHUNK_SIZE)]
     return sub_lists
-
 
 def create_gradient_background(width, height, color1, color2):
     """Creates a vertical gradient background"""

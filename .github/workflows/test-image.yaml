@@ -53,7 +53,7 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           SCOPES: ${{ secrets.SCOPES }}
           TOKEN_URI: ${{ secrets.TOKEN_URI }}
-        run: python image_generator_v2.py
+        run: python image_generator_v3.py
 
       # Step 7: Upload generated image as artifact
       - name: Upload generated image
