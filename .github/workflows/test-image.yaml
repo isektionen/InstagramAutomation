@@ -56,6 +56,9 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           SCOPES: ${{ secrets.SCOPES }}
           TOKEN_URI: ${{ secrets.TOKEN_URI }}
+          BURNER_USERNAME: ${{ secrets.BURNER_USERNAME }}
+          BURNER_PASSWORD: ${{ secrets.BURNER_PASSWORD }}
+
         run: python v3.py
 
       # Step 7: Upload generated image as artifact
