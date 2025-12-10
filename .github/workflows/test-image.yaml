@@ -48,7 +48,7 @@ jobs:
           ls -R
           
       # Step 6: Run image generator script
-      - name: Run image_generator_v2
+      - name: Run main code thing
         env:
           TOKEN: ${{ secrets.TOKEN }}
           REFRESH_TOKEN: ${{ secrets.REFRESH_TOKEN }}
@@ -56,7 +56,7 @@ jobs:
           CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
           SCOPES: ${{ secrets.SCOPES }}
           TOKEN_URI: ${{ secrets.TOKEN_URI }}
-        run: python image_generator_v3.py
+        run: python v3.py
 
       # Step 7: Upload generated image as artifact
       - name: Upload generated image
