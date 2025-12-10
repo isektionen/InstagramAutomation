@@ -46,6 +46,12 @@ jobs:
           pwd
           ls -la
           ls -R
+      
+      - name: Restore Insta settings
+        run: |
+          echo "$IG_SESSION_B64" | base64 --decode > insta_settings.json
+        env:
+          IG_SESSION_B64: ${{ secrets.IG_SESSION_B64 }}
           
       # Step 6: Run image generator script
       - name: Run main code thing
