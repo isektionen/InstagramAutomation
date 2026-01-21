@@ -40,6 +40,8 @@ jobs:
         env:
           IG_USERNAME: ${{ secrets.IG_USERNAME }}
           IG_PASSWORD: ${{ secrets.IG_PASSWORD }}
+          BURNER_USERNAME: ${{ secrets.BURNER_USERNAME }}
+          BURNER_PASSWORD: ${{ secrets.BURNER_PASSWORD }}
           API_KEY: ${{ secrets.API_KEY }}
           TEMPLATE_ID: ${{ secrets.TEMPLATE_ID }}
           TOKEN: ${{ secrets.TOKEN }}
