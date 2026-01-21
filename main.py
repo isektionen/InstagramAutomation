@@ -7,7 +7,6 @@ import locale
 import requests
 from instagrapi import Client
 
-
 locale.setlocale(locale.LC_TIME, 'sv_SE.UTF-8')
 
 load_dotenv()
@@ -22,6 +21,9 @@ API_KEY = os.environ["API_KEY"]
 TEMPLATE_ID = os.environ["TEMPLATE_ID"]
 IG_USERNAME = os.environ["IG_USERNAME"]
 IG_PASSWORD = os.environ["IG_PASSWORD"]
+
+IG_USERNAME = os.environ["BURNER_USERNAME"]
+IG_PASSWORD = os.environ["BURNER_PASSWORD"]
 
 
 AUTH_TOKEN = Credentials(
@@ -97,8 +99,25 @@ def post_story(image_path):
     cl = Client()
     cl.load_settings(settings_path)
     cl.login(IG_USERNAME, IG_PASSWORD)
-    cl.photo_upload_to_story(image_path, caption="Veckan på I")
+    
+    # Post story
+    media = cl.photo_upload_to_story(image_path, caption="Veckan på I")
     print("✅ Story posted successfully!")
+
+    # Get highlight by name
+    highlights = cl.user_highlights(cl.user_id)
+    target_highlight = None
+    for highlight in highlights:
+        if highlight.title == "Veckan på I":
+            target_highlight = highlight
+            break
+    
+    # Add story to highlight
+    if target_highlight:
+        cl.story_add_to_highlights(media.id, [target_highlight.pk])
+        print("✅ Story added to highlight 'Veckan på I'")
+    else:
+        print("❌ Highlight 'Veckan på I' not found")
 
 if __name__ == '__main__':
     main()
