@@ -115,10 +115,29 @@ print("PNG generated: " + OUTPUT_FILE)
 
 def post_story(image_path):
     settings_path = "insta_settings.json"
+    highlight_title = "Veckan på I"
+
     cl = Client()
     cl.load_settings(settings_path)
     cl.login(IG_USERNAME, IG_PASSWORD)
-    cl.photo_upload_to_story(image_path, caption="Veckan på I")
+    
+    story = cl.photo_upload_to_story(image_path, caption="Veckan på I")
     print("✅ Story posted successfully!")
+
+    #Find existing highlight by title
+    highlights = cl.highlights_user(cl.user_id)
+    highlight_id = None
+    for h in highlights:
+        if h.title == highlight_title:
+            highlight_id = h.pk
+            break
+    if not highlight_id:
+        raise Exception(f'❌ Highlight "{highlight_title}" not found')
+    # Add story to highlight
+    cl.highlight_add_stories(
+        highlight_id=highlight_id,
+        story_ids=[story.pk]
+    )
+    print(f'⭐ Story added to highlight "{highlight_title}"')
 
 post_story(OUTPUT_FILE)
