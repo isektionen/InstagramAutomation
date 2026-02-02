@@ -124,15 +124,18 @@ def post_story(image_path):
     story = cl.photo_upload_to_story(image_path, caption="Veckan på I")
     print("✅ Story posted successfully!")
 
-    #Find existing highlight by title
-    highlights = cl.highlights_user(cl.user_id)
+    # Find existing highlight by title
+    highlights = cl.user_highlights(cl.user_id)
     highlight_id = None
+
     for h in highlights:
         if h.title == highlight_title:
             highlight_id = h.pk
             break
+
     if not highlight_id:
         raise Exception(f'❌ Highlight "{highlight_title}" not found')
+
     # Add story to highlight
     cl.highlight_add_stories(
         highlight_id=highlight_id,
