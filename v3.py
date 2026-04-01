@@ -2,44 +2,52 @@ import requests
 import os
 import random
 import base64
+import logging
 from ics import Calendar
 from datetime import datetime, timedelta
 from zoneinfo import ZoneInfo
 from jinja2 import Template
 from playwright.sync_api import sync_playwright
 from instagrapi import Client
+from instagrapi.exceptions import LoginRequired
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 IG_USERNAME = os.environ["BURNER_USERNAME"]
 IG_PASSWORD = os.environ["BURNER_PASSWORD"]
 
 OUTPUT_FILE = "weekly_events.png"
+SESSION_FILE = "insta_settings.json"
 
-# 1. Define the URL
+# ============================================================
+# 1. Fetch calendar
+# ============================================================
 url = "https://calendar.google.com/calendar/ical/iare.nu_pre97odp8btuq3u2a9i6u3fnbc@group.calendar.google.com/public/basic.ics"
 
-# 2. Fetch the data
 response = requests.get(url)
-response.raise_for_status()  # Check for errors
+response.raise_for_status()
 
-# 3. Parse the calendar
 c = Calendar(response.text)
 
-# 4. Calculate this week's Monday and Sunday
+# ============================================================
+# 2. Calculate this week's Monday–Sunday
+# ============================================================
 today = datetime.now()
 monday = today - timedelta(days=today.weekday())
 sunday = monday + timedelta(days=6)
 monday = monday.replace(hour=0, minute=0, second=0, microsecond=0)
 sunday = sunday.replace(hour=23, minute=59, second=59, microsecond=999999)
 
-# Make datetime objects timezone-aware (Stockholm timezone)
 stockholm_tz = ZoneInfo("Europe/Stockholm")
 monday = monday.replace(tzinfo=stockholm_tz)
 sunday = sunday.replace(tzinfo=stockholm_tz)
 
-# 5. Filter and organize events by day
+# ============================================================
+# 3. Filter and organize events by day
+# ============================================================
 this_week_events = [e for e in c.events if monday <= e.begin.datetime <= sunday]
 
-# Organize events by weekday
 events_by_day = {
     "monday": [],
     "tuesday": [],
@@ -71,13 +79,14 @@ for event in this_week_events:
             }
         )
 
-# Sort events by start time for each day
 for day in events_by_day:
     events_by_day[day].sort(key=lambda x: x["start_time"])
 
 print(f"Found {len(this_week_events)} events this week (Monday to Sunday)\n")
 
-# 6. Load background image
+# ============================================================
+# 4. Load background image
+# ============================================================
 imgs_dir = "imgs"
 background_image = None
 if os.path.exists(imgs_dir):
@@ -94,14 +103,18 @@ if os.path.exists(imgs_dir):
             background_image = f"data:image/{ext};base64,{b64_string}"
             print(f"Using background image: {selected_image}")
 
-# 7. Load and render the Jinja template
+# ============================================================
+# 5. Render HTML template
+# ============================================================
 with open("template.html", "r", encoding="utf-8") as f:
     template_content = f.read()
 
 template = Template(template_content)
 html_output = template.render(events=events_by_day, background_image=background_image)
 
-# 8. Generate PNG using Playwright with higher resolution
+# ============================================================
+# 6. Generate PNG with Playwright
+# ============================================================
 with sync_playwright() as p:
     browser = p.chromium.launch()
     page = browser.new_page(
@@ -113,14 +126,54 @@ with sync_playwright() as p:
 
 print("PNG generated: " + OUTPUT_FILE)
 
+# ============================================================
+# 7. Instagram login with session reuse
+# ============================================================
+def login_user():
+    """
+    Robust login following instagrapi best practices:
+    1. Try loading saved session
+    2. Validate with a test request
+    3. Fall back to fresh login if session is dead
+    4. Always save updated session
+    """
+    cl = Client()
+    cl.delay_range = [1, 3]
+
+    session_exists = os.path.exists(SESSION_FILE)
+
+    if session_exists:
+        # Attempt 1: reuse saved session
+        try:
+            cl.load_settings(SESSION_FILE)
+            cl.login(IG_USERNAME, IG_PASSWORD)
+            # Validate session with a test request
+            cl.get_timeline_feed()
+            logger.info("✅ Logged in with saved session")
+            return cl
+        except LoginRequired:
+            logger.warning("⚠️ Saved session expired, trying fresh login...")
+        except Exception as e:
+            logger.warning(f"⚠️ Session load failed: {e}")
+
+    # Attempt 2: fresh login
+    try:
+        cl = Client()
+        cl.delay_range = [1, 3]
+        cl.login(IG_USERNAME, IG_PASSWORD)
+        cl.dump_settings(SESSION_FILE)
+        logger.info("✅ Fresh login successful, session saved")
+        return cl
+    except Exception as e:
+        logger.error(f"❌ Login failed completely: {e}")
+        raise
+
+
 def post_story(image_path):
-    settings_path = "insta_settings.json"
     highlight_title = "Veckan på I"
 
-    cl = Client()
-    cl.load_settings(settings_path)
-    cl.login(IG_USERNAME, IG_PASSWORD)
-    
+    cl = login_user()
+
     story = cl.photo_upload_to_story(image_path, caption="Veckan på I")
     print("✅ Story posted successfully!")
 
@@ -139,8 +192,13 @@ def post_story(image_path):
     # Add story to highlight
     cl.highlight_add_stories(
         highlight_id=highlight_id,
-        story_ids=[story.pk]
+        story_ids=[story.pk],
     )
     print(f'⭐ Story added to highlight "{highlight_title}"')
+
+    # Save updated session for next run
+    cl.dump_settings(SESSION_FILE)
+    logger.info("💾 Updated session saved")
+
 
 post_story(OUTPUT_FILE)
