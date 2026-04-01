@@ -14,8 +14,8 @@ from instagrapi.exceptions import LoginRequired
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-IG_USERNAME = os.environ["IG_USERNAME"]
-IG_PASSWORD = os.environ["IG_PASSWORD"]
+IG_USERNAME = os.environ["BURNER_USERNAME"]
+IG_PASSWORD = os.environ["BURNER_PASSWORD"]
 
 OUTPUT_FILE = "weekly_events.png"
 SESSION_FILE = "insta_settings.json"
